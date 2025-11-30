@@ -52,12 +52,13 @@ jobs:
           echo "
           run:
             TARGET_DATE: \"\"
-            TOP_K: 50
+            TOP_K: 32
             EMBEDDING_MODEL: \"models/gemini-embedding-001\"
             AI_ENABLE: true
 
           zotero:
             ZOTERO_USER: \"${{ secrets.ZOTERO_USER }}\"
+            ZOTERO_GROUP: \"\"
             ZOTERO_KEY: \"${{ secrets.ZOTERO_KEY }}\"
 
           ai:
