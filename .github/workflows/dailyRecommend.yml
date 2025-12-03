@@ -20,7 +20,24 @@ jobs:
     # 运行此作业所需的虚拟机环境
     runs-on: ubuntu-latest
     env:
-      GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
+        TARGET_DATE: ""
+        TOP_K: 32
+        EMBEDDING_MODEL: "models/gemini-embedding-001"
+        AI_ENABLE: true
+        
+        ZOTERO_USER: ${{ secrets.ZOTERO_USER }}
+        ZOTERO_GROUP: ""
+        ZOTERO_KEY: ${{ secrets.ZOTERO_KEY }}
+
+        GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
+        GEMINI_MODEL: "models/gemini-2.5-Pro"
+      
+        EMAIL_SERVER: "smtp.exmail.qq.com"
+        EMAIL_PORT: 465
+        EMAIL_USER: ${{ secrets.EMAIL_USER }}
+        EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+        EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+        EMAIL_TO: ${{ secrets.EMAIL_TO }}
 
     # 作业的步骤
     steps:
@@ -44,43 +61,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 步骤4: 从 Secrets 创建配置文件
-      # 这是最关键的一步。我们从 GitHub Secrets 读取敏感信息，
-      # 并动态生成 Config.yaml 文件，避免将密钥硬编码在代码中。
-      - name: Create Config.yaml from Secrets
-        run: |
-          echo "
-          run:
-            TARGET_DATE: \"\"
-            TOP_K: 32
-            EMBEDDING_MODEL: \"models/gemini-embedding-001\"
-            AI_ENABLE: true
-
-          zotero:
-            ZOTERO_USER: \"${{ secrets.ZOTERO_USER }}\"
-            ZOTERO_GROUP: \"\"
-            ZOTERO_KEY: \"${{ secrets.ZOTERO_KEY }}\"
-
-          ai:
-            GEMINI_KEY: \"${{ secrets.GEMINI_KEY }}\"
-            GEMINI_MODEL: \"models/gemini-2.5-Pro\"
-          
-          email:
-            EMAIL_SERVER: \"smtp.exmail.qq.com\"
-            EMAIL_PORT: 465
-            EMAIL_USER: \"${{ secrets.EMAIL_USER }}\"
-            EMAIL_PASS: \"${{ secrets.EMAIL_PASS }}\"
-            EMAIL_FROM: \"${{ secrets.EMAIL_FROM }}\"
-            EMAIL_TO: \"${{ secrets.EMAIL_TO }}\"
-          " > Config.yaml
-        # 注意: 上面的 ${{ secrets.SECRET_NAME }} 语法是 Actions 获取密钥的标准方式
-        
       # --- 新增的调试步骤 ---
       - name: Debug Secrets Availability
         run: |
           echo "ZOTERO_USER is: [${{ env.ZOTERO_USER }}]"
           echo "ZOTERO_KEY is: ${{ env.ZOTERO_KEY }}"
-      # ----------------------
       
       # 步骤5: 运行主程序
       # 执行 Python 脚本来抓取论文并生成报告
