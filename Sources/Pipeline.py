@@ -43,6 +43,7 @@ class Pipeline:
         zoteroKey  = os.getenv("ZOTERO_KEY")
         headers = {"Zotero-API-Key": zoteroKey}
         baseUrl = f"https://api.zotero.org/users/{zoteroUser}/items?format=json&limit=9999&sort=dateModified&direction=desc"
+        log.info(f'{baseUrl}')
         
         zoteroPapers = requests.get(baseUrl, headers = headers, timeout = 60).json()
         totalPapers = 0
