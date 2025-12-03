@@ -74,7 +74,14 @@ jobs:
             EMAIL_TO: \"${{ secrets.EMAIL_TO }}\"
           " > Config.yaml
         # 注意: 上面的 ${{ secrets.SECRET_NAME }} 语法是 Actions 获取密钥的标准方式
-
+        
+      # --- 新增的调试步骤 ---
+      - name: Debug Secrets Availability
+        run: |
+          echo "ZOTERO_USER is: [${{ env.ZOTERO_USER }}]"
+          echo "ZOTERO_KEY is: ${{ env.ZOTERO_KEY }}"
+      # ----------------------
+      
       # 步骤5: 运行主程序
       # 执行 Python 脚本来抓取论文并生成报告
       - name: Run PaperLens main script
